@@ -1,0 +1,39 @@
+gs = import "./gamescene-plat"
+num = counter(256)
+
+group1 = ?g
+group2 = ?g
+
+let block1 = obj {
+  obj_props.OBJ_ID: 1764,
+    obj_props.X: 100,
+    obj_props.Y: 90,
+    obj_props.SCALING: 1.5,
+    obj_props.ROTATION: 45,
+    obj_props.GROUPS: [group1],
+}
+let block2 = obj {
+  obj_props.OBJ_ID: 1764,
+    obj_props.X: 70,
+    obj_props.Y: 90,
+    obj_props.SCALING: 1.5,
+    obj_props.ROTATION: 45,
+    obj_props.GROUPS: [group2],
+}
+
+$.add(block1)
+$.add(block2)
+
+on(gs.button_left(), !{
+  group1.toggle_on()
+})
+on(gs.button_left_end(), !{
+  group1.toggle_off()
+})
+
+on(gs.button_right(), !{
+  group2.toggle_on()
+})
+on(gs.button_right_end(), !{
+  group2.toggle_off()
+})
