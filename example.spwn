@@ -3,6 +3,7 @@ num = counter(256)
 
 group1 = ?g
 group2 = ?g
+group3 = ?g
 
 let block1 = obj {
   obj_props.OBJ_ID: 1764,
@@ -20,9 +21,18 @@ let block2 = obj {
     obj_props.ROTATION: 45,
     obj_props.GROUPS: [group2],
 }
+let block3 = obj {
+  obj_props.OBJ_ID: 1764,
+    obj_props.X: 70,
+    obj_props.Y: 120,
+    obj_props.SCALING: 1.5,
+    obj_props.ROTATION: 45,
+    obj_props.GROUPS: [group3],
+}
 
 $.add(block1)
 $.add(block2)
+$.add(block3)
 
 on(gs.button_left(), !{
   group1.toggle_on()
@@ -37,3 +47,11 @@ on(gs.button_right(), !{
 on(gs.button_right_end(), !{
   group2.toggle_off()
 })
+
+on(gs.button_up(), !{
+  group3.toggle_on()
+})
+on(gs.button_up_end(), !{
+  group3.toggle_off()
+})
+

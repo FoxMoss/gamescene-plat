@@ -5,23 +5,28 @@ follow_x_left_lag_group = ?g
 follow_x_left_lag_group_clone = ?g
 follow_x_right_lag_group = ?g
 follow_x_right_lag_group_clone = ?g
+follow_y_up_lag_group = ?g
+follow_y_up_lag_group_clone = ?g
 follow_y_group = ?g
 hidden_group = ?g
 
--> hidden_group.alpha(0)
+//-> hidden_group.alpha(0)
 -> follow_x_group.lock_to_player(lock_x = true, lock_y = false)
 -> follow_x_left_lag_group_clone.lock_to_player(lock_x = true, lock_y = false)
 -> follow_x_right_lag_group_clone.lock_to_player(lock_x = true, lock_y = false)
+-> follow_y_up_lag_group_clone.lock_to_player(lock_x = false, lock_y = true)
 -> follow_y_group.follow_player_y()
 
 player_block = ?b
 left_block = ?b
 right_block = ?b
+up_block = ?b
 
 while_loop(() => true, ()
 {
   -> follow_x_left_lag_group.move_to(follow_x_left_lag_group_clone, 0.1)
   -> follow_x_right_lag_group.move_to(follow_x_right_lag_group_clone, 0.1)
+  -> follow_y_up_lag_group.move_to(follow_y_up_lag_group_clone, 0)
 })
 
 
@@ -69,18 +74,42 @@ $.add(obj {
         GROUPS: [ hidden_group, follow_x_right_lag_group, follow_y_group],
 })
 
+// up block
+$.add(obj {
+        OBJ_ID: obj_ids.special.COLLISION_BLOCK,
+        DYNAMIC_BLOCK: false,
+        X: 0,
+        Y: 52,
+        GROUPS: [ hidden_group, follow_y_up_lag_group_clone, follow_x_group ],
+})
+
+$.add(obj {
+        OBJ_ID: obj_ids.special.COLLISION_BLOCK,
+        DYNAMIC_BLOCK: false,
+        BLOCK_A: up_block,
+        X: 0,
+        Y: 52,
+        GROUPS: [ hidden_group, follow_y_up_lag_group, follow_x_group],
+})
+
 return {
   button_left: #[desc("returns an event for when going left")] () {
     return collision(player_block, left_block)
   },
-  button_left_end: #[desc("returns an event for when going left is realeased")] () {
+  button_left_end: #[desc("returns an event for when going left is released")] () {
     return collision_exit(player_block, left_block)
   },
  button_right: #[desc("returns an event for when going right")] () {
    return collision(player_block, right_block)
  },
- button_right_end: #[desc("returns an event for when going right is realeased")] () {
+ button_right_end: #[desc("returns an event for when going right is released")] () {
    return collision_exit(player_block, right_block)
+ },
+ button_up: #[desc("returns an event for when going up")] () {
+   return collision(player_block, up_block)
+ },
+ button_up_end: #[desc("returns an event for when going up is released")] () {
+   return collision_exit(player_block, up_block)
  },
   hidden_group: #[desc("A group that is hidden (alpha = 0)")] hidden_group,
 }
